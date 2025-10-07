@@ -5,6 +5,7 @@
     <title>json Employes</title>
 </head>
 <body>
+
 <h1>JRostand Reperes Stade</h1>
 <hr>
 <div id="map">Chargement de la carte...</div>
@@ -15,19 +16,20 @@
         height: 80vh; /* Utilisation de vh pour que la carte soit visible */
         width: 100%;
     }
-code
-Code
-/* Optional: Makes the sample page fill the window. */
-html,
-body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
+
+    /* Optional: Makes the sample page fill the window. */
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
 </style>
+
 <!-- La clé API est incluse ici, mais doit être sécurisée pour une utilisation en production. -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7Y32T_PJHZxYcK3BJYJFNwSl6cuvLXpo&callback=initMap" async defer></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <script>
     // Variable globale pour la carte
     let map;
@@ -46,9 +48,10 @@ body {
         loadDoc();
     }
     
-    // Fonction pour ajouter les marqueurs sur la carte
+    // Fonction pour ajouter les marqueurs sur la carte ET la polyline
     function addMarkers(markerData) {
         const bounds = new google.maps.LatLngBounds(); // Pour ajuster la vue
+        const polylineCoordinates = []; // NOUVEAU: Pour stocker les coordonnées de la polyline
 
         markerData.forEach(marker => {
             // S'assurer que les coordonnées sont des nombres
@@ -57,15 +60,33 @@ body {
                 lng: parseFloat(marker.lng) 
             };
             
+            // NOUVEAU: Ajouter la position à la liste des coordonnées du chemin
+            polylineCoordinates.push(position); 
+
             // Création du marqueur
             const gMarker = new google.maps.Marker({
                 position: position,
                 map: map,
-                title: marker.title || 'Marqueur', // Supposant que le JSON a un champ 'title'
+                title: marker.title || 'Marqueur', 
             });
 
             bounds.extend(position); // Ajouter la position aux limites
         });
+
+        // NOUVEAU: Créer et afficher la Polyline
+        if (polylineCoordinates.length > 1) {
+            const polyline = new google.maps.Polyline({
+                path: polylineCoordinates, // Utilise le tableau des coordonnées
+                geodesic: true, 
+                strokeColor: '#FF0000', // Couleur de la ligne (Rouge)
+                strokeOpacity: 0.8,
+                strokeWeight: 4
+            });
+
+            polyline.setMap(map); // Ajoute la polyline à la carte
+            console.log("Polyline créée reliant tous les marqueurs.");
+        }
+
 
         // Ajuster la carte pour afficher tous les marqueurs
         if (markerData.length > 0) {
@@ -120,7 +141,7 @@ body {
                                 le serveur web. Afficher votre map.
                             */
                            
-                            // 2. Création des markers Google Maps
+                            // 2. Création des markers Google Maps et de la Polyline
                             if (typeof google !== 'undefined' && map) {
                                 addMarkers(markers);
                             } else {
@@ -136,5 +157,6 @@ body {
     };
 
 </script>
+
 </body>
 </html>
