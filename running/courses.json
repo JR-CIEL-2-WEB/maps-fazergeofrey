@@ -1,0 +1,37 @@
+{
+  "parcours": [
+    {
+      "titre": "Parcours Découverte - 5km",
+      "couleur": "#4CAF50",
+      "points": [
+        { "lat": 48.959300, "lng": 2.547789 },
+        { "lat": 48.959016, "lng": 2.544364 },
+        { "lat": 48.960832, "lng": 2.542819 },
+        { "lat": 48.961468, "lng": 2.553135 },
+        { "lat": 48.959971, "lng": 2.548567 }
+      ]
+    },
+    {
+      "titre": "Parcours Intermédiaire - 10km",
+      "couleur": "#FFC107",
+      "points": [
+        { "lat": 48.8609, "lng": 2.3377 },
+        { "lat": 48.8583, "lng": 2.3369 },
+        { "lat": 48.8546, "lng": 2.3426 },
+        { "lat": 48.8556, "lng": 2.3526 },
+        { "lat": 48.8600, "lng": 2.3497 }
+      ]
+    },
+    {
+      "titre": "Parcours Expert - 15km",
+      "couleur": "#F44336",
+      "points": [
+        { "lat": 48.8520, "lng": 2.3470 },
+        { "lat": 48.8490, "lng": 2.3520 },
+        { "lat": 48.8450, "lng": 2.3470 },
+        { "lat": 48.8490, "lng": 2.3420 },
+        { "lat": 48.8520, "lng": 2.3470 }
+      ]
+    }
+  ]
+}
