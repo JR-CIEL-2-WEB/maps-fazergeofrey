@@ -1,0 +1,140 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>json Employes</title>
+</head>
+<body>
+<h1>JRostand Reperes Stade</h1>
+<hr>
+<div id="map">Chargement de la carte...</div>
+<style type="text/css">
+    /* Always set the map height explicitly to define the size of the div
+     * element that contains the map. */
+    #map {
+        height: 80vh; /* Utilisation de vh pour que la carte soit visible */
+        width: 100%;
+    }
+code
+Code
+/* Optional: Makes the sample page fill the window. */
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+</style>
+<!-- La clé API est incluse ici, mais doit être sécurisée pour une utilisation en production. -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7Y32T_PJHZxYcK3BJYJFNwSl6cuvLXpo&callback=initMap" async defer></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    // Variable globale pour la carte
+    let map;
+
+    // Fonction appelée par le script Google Maps au chargement de l'API
+    function initMap() {
+        // Position par défaut (ex: le centre de la France ou une zone proche du Stade JRostand si connue)
+        const defaultPos = { lat: 48.8566, lng: 2.3522 }; // Exemple: Paris
+        
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 12,
+            center: defaultPos,
+        });
+        
+        // Après l'initialisation de la carte, on charge les données
+        loadDoc();
+    }
+    
+    // Fonction pour ajouter les marqueurs sur la carte
+    function addMarkers(markerData) {
+        const bounds = new google.maps.LatLngBounds(); // Pour ajuster la vue
+
+        markerData.forEach(marker => {
+            // S'assurer que les coordonnées sont des nombres
+            const position = { 
+                lat: parseFloat(marker.lat), 
+                lng: parseFloat(marker.lng) 
+            };
+            
+            // Création du marqueur
+            const gMarker = new google.maps.Marker({
+                position: position,
+                map: map,
+                title: marker.title || 'Marqueur', // Supposant que le JSON a un champ 'title'
+            });
+
+            bounds.extend(position); // Ajouter la position aux limites
+        });
+
+        // Ajuster la carte pour afficher tous les marqueurs
+        if (markerData.length > 0) {
+             map.fitBounds(bounds);
+        }
+    }
+
+
+    // Ajax avec JQuery
+    function loadDoc() {
+        $.ajax({
+
+                url: "/maps2.3/markersJrostand.json", 
+                method: "GET",               
+                dataType: "json",            
+
+                
+                success: function(markers){
+                            /* markers representera un objet JSON retourné par le serveur */
+                            console.log("Données chargées :", markers);
+
+                            /*
+                                compléter le code de la fonction afin d'afficher les chaque coordonnée  à la console
+                            */
+
+                            /*
+                                vous utiliserez deux boucles for
+                                - boucle for classique sur markers
+                                - boucle for in sur marker
+                            */
+                            
+                            // 1. Log des coordonnées
+                            if (Array.isArray(markers)) {
+                                for (let i = 0; i < markers.length; i++) { // Boucle for classique
+                                    let marker = markers[i];
+                                    console.log(`--- Marqueur [${i}] ---`);
+                                    for (let key in marker) { // Boucle for in
+                                        // On suppose que les champs de coordonnées sont 'lat' et 'lng'
+                                        if (key === 'lat' || key === 'lng' || key === 'title') {
+                                            console.log(`  ${key}: ${marker[key]}`);
+                                        }
+                                    }
+                                }
+                            } else {
+                                console.error("Le fichier JSON n'est pas un tableau.");
+                                return;
+                            }
+
+
+                            /*
+                                Créer des markers Google avec l'API Google Maps en utilisant l'objet renvoyé par
+                                le serveur web. Afficher votre map.
+                            */
+                           
+                            // 2. Création des markers Google Maps
+                            if (typeof google !== 'undefined' && map) {
+                                addMarkers(markers);
+                            } else {
+                                console.error("API Google Maps ou objet 'map' non initialisé.");
+                            }
+                        },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("Erreur lors du chargement de markersJrostand.json:", textStatus, errorThrown);
+                    $("#map").html("Erreur de chargement des données des marqueurs.");
+                }
+            }
+        );
+    };
+
+</script>
+</body>
+</html>

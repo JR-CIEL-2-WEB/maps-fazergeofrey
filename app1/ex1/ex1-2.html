@@ -228,10 +228,24 @@
 	document.getElementById("Button1").addEventListener('click',readTab);
 
 	function readTab(){
-       //TODO
+		const cdCollection = JSON.parse(CDs);
+ 
+		// 2. Boucler sur chaque objet CD dans le tableau cdCollection
+	
+		for (let i = 0; i < cdCollection.length; i++) {
+			const cd = cdCollection[i]; // On récupère le CD courant
 
+			// pour plus de clarté
+			console.log("--------------");
+
+			// un peu comme dnas l'exemple 
+			for (const key in cd) {
+				// 4. Afficher le nom de la propriété (la clé) et sa valeur
+				console.log(key + ': ' + cd[key]);
+			}
+		}
 	}
-
+;
 </script>
 
 </body>

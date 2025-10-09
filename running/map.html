@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nos Parcours de Course - RunTracker</title>
+    <link rel="stylesheet" href="/running/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1><a href="/running/index.html">RunTracker</a></h1>
+    </header>
+
+    <main class="container">
+        <div id="selection-parcours">
+            <h2>Choisissez votre course :</h2>
+            <div id="boutons-parcours">
+                <!-- Les boutons seront générés par le JavaScript -->
+            </div>
+        </div>
+        <div id="map">Chargement de la carte...</div>
+    </main>
+
+    <footer>
+        <p>RunTracker - Projet de site de running - 2025</p>
+    </footer>
+
+    <!-- IMPORTANT : Charger script.js AVANT l'API Google Maps -->
+    <script src="/running/script.js"></script>
+    <!-- L'API Google Maps appelle initMap() une fois chargée -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7Y32T_PJHZxYcK3BJYJFNwSl6cuvLXpo&callback=initMap" async defer></script>
+</body>
+</html>

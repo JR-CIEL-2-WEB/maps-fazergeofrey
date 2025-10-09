@@ -1,0 +1,140 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>json Employes</title>
+</head>
+<body>
+
+<h1>JRostand Reperes Stade</h1>
+<hr>
+<div id="map">Chargement de la carte...</div>
+<style type="text/css">
+    /* Always set the map height explicitly to define the size of the div
+     * element that contains the map. */
+    #map {
+        height: 80vh; /* Utilisation de vh pour que la carte soit visible */
+        width: 100%;
+    }
+
+    /* Optional: Makes the sample page fill the window. */
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+</style>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7Y32T_PJHZxYcK3BJYJFNwSl6cuvLXpo&callback=initMap" async defer></script>
+
+<script>
+    // Variable globale pour la carte
+    let map;
+    const jsonUrl = "/maps2.3/markersJrostand.json"; // URL du fichier JSON
+
+    // Fonction appelée par le script Google Maps au chargement de l'API
+    function initMap() {
+        // Position par défaut (Exemple: Paris)
+        const defaultPos = { lat: 48.8566, lng: 2.3522 }; 
+        
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 12,
+            center: defaultPos,
+        });
+        
+        // Après l'initialisation de la carte, on charge les données
+        loadDoc();
+    }
+    
+    // Fonction pour ajouter les marqueurs sur la carte et créer la polyline
+    function addMarkers(markerData) {
+        const bounds = new google.maps.LatLngBounds(); // Pour ajuster la vue
+        const polylineCoordinates = []; // Pour stocker les coordonnées du chemin
+
+        markerData.forEach(marker => {
+            // S'assurer que les coordonnées sont des nombres
+            const position = { 
+                lat: parseFloat(marker.lat), 
+                lng: parseFloat(marker.lng) 
+            };
+            
+            // Ajouter la position à la liste des coordonnées du chemin
+            polylineCoordinates.push(position); 
+
+            // Création du marqueur
+            const gMarker = new google.maps.Marker({
+                position: position,
+                map: map,
+                title: marker.title || 'Marqueur', 
+            });
+
+            bounds.extend(position); // Ajouter la position aux limites
+        });
+
+        // Créer et afficher la Polyline si nous avons au moins deux points
+        if (polylineCoordinates.length > 1) {
+            const polyline = new google.maps.Polyline({
+                path: polylineCoordinates, 
+                geodesic: true, 
+                strokeColor: '#FF0000', // Rouge
+                strokeOpacity: 0.8,
+                strokeWeight: 4
+            });
+
+            polyline.setMap(map); // Ajoute la polyline à la carte
+        }
+
+        // Ajuster la carte pour afficher tous les marqueurs
+        if (markerData.length > 0) {
+             map.fitBounds(bounds);
+        }
+    }
+
+
+    // Récupération des données avec la méthode fetch 
+    function loadDoc() {
+        fetch(jsonUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP: ${response.status}`);
+                }
+                return response.json(); // Convertit la réponse en objet JavaScript (JSON)
+            })
+            .then(markers => {
+                // Le tableau 'markers' est maintenant disponible
+                console.log("Données chargées :", markers);
+
+                // 1. Log des coordonnées (simplifié)
+                if (Array.isArray(markers)) {
+                    markers.forEach((marker, index) => {
+                         console.log(`--- Marqueur [${index}] ---`);
+                         for (let key in marker) { 
+                             if (key === 'lat' || key === 'lng' || key === 'title') {
+                                 console.log(`  ${key}: ${marker[key]}`);
+                             }
+                         }
+                    });
+                } else {
+                    console.error("Le fichier JSON n'est pas un tableau.");
+                    return;
+                }
+
+                // 2. Création des markers Google Maps et de la Polyline
+                if (typeof google !== 'undefined' && map) {
+                    addMarkers(markers);
+                } else {
+                    console.error("API Google Maps ou objet 'map' non initialisé.");
+                }
+            })
+            .catch(error => {
+                // Gère les erreurs de réseau ou d'analyse JSON
+                console.error("Erreur lors du chargement des données:", error);
+                document.getElementById("map").innerHTML = "Erreur de chargement des données des marqueurs.";
+            });
+    }
+
+</script>
+
+</body>
+</html>

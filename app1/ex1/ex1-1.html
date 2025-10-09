@@ -29,7 +29,17 @@
 	document.getElementById("Button1").addEventListener('click',readTab);
 
 	function readTab(){
-				//TODO
+		// 1. On transforme la chaîne de caractères CD en objet JavaScript.
+		const cdObject = JSON.parse(CD);
+		
+		// À chaque tour, la variable "clef" contiendra le nom d'une propriété (ex: "TITLE").
+		for (const clef in cdObject) {
+		
+			
+			// Pour accéder à la valeur, on utilise la syntaxe objet[clef].
+			console.log(clef + ": " + cdObject[clef]);
+		}
+				
 	}
   
 </script>
