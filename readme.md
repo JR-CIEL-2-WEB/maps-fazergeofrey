@@ -1,3 +1,4 @@
+[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=20661069&assignment_repo_type=AssignmentRepo)
 # ACTIVITE MAPS
 ## Sujet de l'activité
 Vous trouverez le sujet via ce [lien](https://docs.google.com/document/d/1_f3wa046GHqpQVQXHYsbJi_vZGt_tLwtoiRUXwrdVQ8/edit?tab=t.0).

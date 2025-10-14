@@ -1,0 +1,55 @@
+<!DOCTYPE html >
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>json Employes</title>
+	</head>
+<body>
+
+<h1>JSON.parse()</h1>
+<hr>
+<div id="demo">...</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+	// au chargement de la page
+	window.onload = loadDoc();
+
+
+	// Ajax avec JQuery
+	function loadDoc() {
+		$.ajax({
+					url: "cd_catalog.json",
+					method: "GET",
+					dataType: "json",
+					success: function(CDs){
+	/* CDs représente maintenant un tableau d'objets JavaScript, car jQuery a fait le travail de "parsing" pour nous. */
+	console.log("Les données du fichier JSON ont été chargées avec succès !");
+
+	// 1. Boucle for classique pour parcourir le tableau principal 'CDs'
+	for (var i = 0; i < CDs.length; i++) {
+
+		// On stocke l'objet CD de l'itération actuelle dans une variable pour plus de clarté
+		var cd = CDs[i];
+
+		// On affiche un séparateur dans la console pour mieux distinguer les CDs
+		console.log("--------------------");
+
+		// 2. Boucle for...in pour parcourir les propriétés (clé/valeur) de l'objet 'cd'
+		for (var key in cd) {
+			
+			// On affiche la clé (ex: "TITLE") et la valeur correspondante (ex: "Empire Burlesque")
+			console.log(key + ': ' + cd[key]);
+		}
+	}
+}	
+				}
+		);
+		  console.log("ok");
+	};
+
+
+</script>
+
+</body>
+</html>
