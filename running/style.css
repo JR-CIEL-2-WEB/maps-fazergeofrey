@@ -9,7 +9,7 @@ body {
 
 /* --- Style de la page d'accueil (index.html) --- */
 .hero {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../img/hero-background.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('image.jpg');
     height: 100vh;
     background-position: center;
     background-repeat: no-repeat;
